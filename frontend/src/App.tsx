@@ -1,26 +1,26 @@
-import CountBtn from "@/components/count-btn";
-import ReactSVG from "@/assets/react.svg";
-import { Badge } from "@/components/ui/badge";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Home from "./components/pages/home";
+import Login from "./components/pages/login";
+import Secret from "./components/pages/secret";
+import Auth from "./components/layouts/auth";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <main className="flex flex-col items-center justify-center h-screen">
-      <div className="flex flex-col items-center gap-y-4">
-        <div className="inline-flex items-center gap-x-4">
-          <img src={ReactSVG} alt="React Logo" className="w-32" />
-          <span className="text-6xl">+</span>
-          <img src={"/vite.svg"} alt="Vite Logo" className="w-32" />
-        </div>
-        <a
-          href="https://ui.shadcn.com"
-          rel="noopener noreferrer nofollow"
-          target="_blank"
-        >
-          <Badge variant="outline">shadcn/ui</Badge>
-        </a>
-        <CountBtn />
-      </div>
-    </main>
+    <BrowserRouter>
+      <Auth.Provider>
+        <Routes>
+          <Route path="/" element={<Auth.Basic children={<Home />} />} />
+          <Route
+            path="/secret"
+            element={<Auth.Private children={<Secret />} />}
+          />
+          <Route path="/login" element={<Auth.Public children={<Login />} />} />
+        </Routes>
+
+        <Toaster position="top-right" reverseOrder={false} />
+      </Auth.Provider>
+    </BrowserRouter>
   );
 }
 
